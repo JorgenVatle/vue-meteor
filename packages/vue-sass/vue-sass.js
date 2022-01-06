@@ -12,8 +12,6 @@ function resolveImport (dependencyManager) {
     url = url.replace(/^["']?(.*?)["']?$/, '$1')
     if (url.indexOf('~') === 0 || url.indexOf('/') === 0) {
       resolvedFilename = url.substr(1)
-    /* } else if (url.indexOf('{') === 0) {
-      resolvedFilename = decodeFilePath(url) */
     } else {
       let currentDirectory = path.dirname(prev === 'stdin' ? this.options.outFile : prev)
       resolvedFilename = path.resolve(currentDirectory, url)
@@ -66,19 +64,6 @@ function discoverImportPath (importPath) {
   return null
 }
 
-// function decodeFilePath (filePath) {
-//   const match = filePath.match(/^{(.*)}\/(.*)$/)
-//   if (!match)
-//     {throw new Error('Failed to decode Sass path: ' + filePath)}
-
-//   if (match[1] === '') {
-//     // app
-//     return match[2]
-//   }
-
-//   return 'packages/' + match[1] + '/' + match[2]
-// }
-
 global.vue.lang.scss = Meteor.wrapAsync(function ({
   source,
   basePath,
@@ -93,15 +78,14 @@ global.vue.lang.scss = Meteor.wrapAsync(function ({
     data: source,
     importer: resolveImport(dependencyManager),
     outFile: inputFile.getPathInPackage() + '.css',
-    sourceMap: true,
-    sourceMapContents: true,
+    sourceMap: false,
+    sourceMapContents: false,
   }, function (error, result) {
     if (error) {
       cb(error, null)
     } else {
       cb(null, {
         css: result.css.toString(),
-        map: result.map.toString(),
       })
     }
   })
@@ -121,8 +105,8 @@ global.vue.lang.sass = Meteor.wrapAsync(function ({
     data: source,
     importer: resolveImport(dependencyManager),
     outFile: basePath + '.css',
-    sourceMap: true,
-    sourceMapContents: true,
+    sourceMap: false,
+    sourceMapContents: false,
     indentedSyntax: true,
   }, function (error, result) {
     if (error) {
@@ -130,7 +114,6 @@ global.vue.lang.sass = Meteor.wrapAsync(function ({
     } else {
       cb(null, {
         css: result.css.toString(),
-        map: result.map.toString(),
       })
     }
   })
