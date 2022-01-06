@@ -78,15 +78,14 @@ global.vue.lang.scss = Meteor.wrapAsync(function ({
     data: source,
     importer: resolveImport(dependencyManager),
     outFile: inputFile.getPathInPackage() + '.css',
-    sourceMap: true,
-    sourceMapContents: true,
+    sourceMap: false,
+    sourceMapContents: false,
   }, function (error, result) {
     if (error) {
       cb(error, null)
     } else {
       cb(null, {
         css: result.css.toString(),
-        map: result.map.toString(),
       })
     }
   })
