@@ -106,8 +106,8 @@ global.vue.lang.sass = Meteor.wrapAsync(function ({
     data: source,
     importer: resolveImport(dependencyManager),
     outFile: basePath + '.css',
-    sourceMap: true,
-    sourceMapContents: true,
+    sourceMap: false,
+    sourceMapContents: false,
     indentedSyntax: true,
   }, function (error, result) {
     if (error) {
@@ -115,7 +115,6 @@ global.vue.lang.sass = Meteor.wrapAsync(function ({
     } else {
       cb(null, {
         css: result.css.toString(),
-        map: result.map.toString(),
       })
     }
   })
